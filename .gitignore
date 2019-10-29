@@ -7,3 +7,9 @@ env/
 
 # arquivo de cache
 __pycache__
+
+# configurações do vscode
+.vscode/
+
+# requirements fora da raíz do projeto
+*/**/requirements.txt
