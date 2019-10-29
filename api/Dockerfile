@@ -15,5 +15,5 @@ COPY entrypoint.sh /app
 
 COPY . /app
 
-CMD ["python3", "/app/app.py"]
+CMD ["sh", "entrypoint.sh"]
 
