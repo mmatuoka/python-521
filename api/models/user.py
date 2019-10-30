@@ -54,15 +54,18 @@ class User:
             'email': self.email
         }
 
-    def save(self) :
-        db.users.update({
-            '_id': self._id
-        }, {
+    def save(self):
+
+        query = {'email': self.email}
+
+        if self._id:
+            query = {'_id': self._id}
+
+        db.users.update(query, {
             'name': self.name,
             'email': self.email,
             'password': self.password
-        }, upsert=True
-        )   
+        }, upsert=True)   
     
     def remove(self):
         db.users.remove({
