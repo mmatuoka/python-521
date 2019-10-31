@@ -1,0 +1,23 @@
+version: "3"
+services:
+  jenkins:
+    image: jenkins/jenkins
+    ports:
+      - 8080:8080
+
+  ldap:
+    image: osixia/openldap
+    ports:
+      - 636:636
+      - 389:389
+    environment:
+      - LDAP_DOMAIN=dexter.com.br
+      - LDAP_ADMIN_PASSWORD=4linux
+
+  gitlab:
+    image: gitlab/gitlab-ce
+    ports:
+      - 443:443
+      - 8001:80
+    
+

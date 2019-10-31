@@ -25,12 +25,12 @@
             <td>{{ c.status }}</td>
             <td>
                 <span class="mr-3">
-                    <a href="#" title="Iniciar container">
+                    <a href="/docker/{{ c.id }}/start" title="Iniciar container">
                         <i class="fa fa-play" aria-hidden="true"></i>
                     </a>
                 </span>
                 <span>
-                    <a href="#" title="Parar container">
+                    <a href="/docker/{{ c.id }}/stop" title="Parar container">
                         <i class="fa fa-stop" aria-hidden="true"></i>
                     </a>
                 </span>

@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+
+{% block header %}
+<h5 class="card-title">
+    Jenkins
+</h5>
+{% endblock %}
+
+{% block content %}
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th scope="col">Job</th>
+            <th scope="col">Status</th>
+            <th scope="col">Última vez</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for j in context.jobs %}
+        <tr>
+            <th scope="row">{{ j.name }}</th>
+            <td>
+                <img src="http://localhost:8080/static/6a597a77/images/32x32/{{ j.status }}">
+            </td>
+            <td>{{ j.last_execution }}</td>
+            <td>
+                <span class="mr-3">
+                    <a href="/jenkins/{{ j.name }}/run" title="Rodar job">
+                        <i class="fa fa-play" aria-hidden="true"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="/jenkins/{{ j.name }}/edit" title="Editar job">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

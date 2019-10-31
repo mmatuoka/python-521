@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block header %}
+<h5 class="card-title">
+    Jenkins | Editar {{ context.job.name }}
+</h5>
+{% endblock %}
+
+{% block content %}
+<div class="jenkins-edit">
+    <form method="POST" action="/jenkins/{{ context.job.name }}/edit">
+        <div class="form-group">
+            <label for="description">Editar job</label>
+            <div class="input-group">
+                <textarea class="form-control" rows="8" id="description"
+                    name="description">{{ context.job.description }}</textarea>
+            </div>
+        </div>
+        <a href="/jenkins" class="mr-3">Voltar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock %}
