@@ -1,9 +1,10 @@
 
+import logging
+
 import flask
 import jenkins
 
 from services.authentication import login_required
-
 
 
 blueprint = flask.Blueprint('jenkins', __name__)
@@ -14,10 +15,18 @@ def get_jenkins_connection():
 
     username = 'admin' 
     password = '4linux'
-
+    
     try:
-        return jenkins.Jenkins(url, username, password)
-    except:
+
+        conn = jenkins.Jenkins(url, username, password)
+        conn.get_info()
+        return conn
+
+    except Exception as err:
+
+        logging.error(f'Falha na conexão com o Jenkins: \n{err}')
+        flask.flash(f'Falha na conexão com o Jenkins: \n{err}', 'danger')
+
         return None
 
 def get_jobs():
@@ -52,6 +61,7 @@ def get_jobs():
 @login_required
 def jenkins_action():
     context = {
+        'route': 'jenkins',
         'jobs': get_jobs()
     }
     return flask.render_template('jenkins.html', context=context)

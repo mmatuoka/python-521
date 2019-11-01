@@ -1,5 +1,6 @@
 
 import os
+import logging
 
 import flask
 import dotenv
@@ -10,8 +11,19 @@ from controllers.jenkins_routes import blueprint as jenkins
 from controllers.ldap import blueprint as ldap
 
 
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
+
+logging.basicConfig(
+    filename='app.log',
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(name)s [%(funcName)s] [%(filename)s | %(lineno)s] %(message)s',
+    datefmt='[%d/%m/%Y %H:%M:%S]'
+)
+
+logging.info('Carregando variáveis de ambiente ...')
 dotenv.load_dotenv()
 
+logging.info('Configurando a aplicação ...')
 app = flask.Flask(__name__)
 
 app.secret_key = os.environ.get('SECRET KEY') or 'secret'
@@ -26,5 +38,6 @@ def get_home():
     return flask.redirect('/docker')
 
 if __name__ == '__main__':
+    logging.info('Iniciando a aplicação ...')
     app.run(host='0.0.0.0', port=8000)
 

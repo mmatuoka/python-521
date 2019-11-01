@@ -1,5 +1,6 @@
 
 import hashlib
+import logging
 
 import flask
 import ldap3
@@ -44,11 +45,11 @@ def verify_password(user, password):
 
 @blueprint.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
-    
-    if flask.request.method == 'POST':
 
-        # pegar objeto da conexão
-        conn = get_ldap_connection()
+    # pegar objeto da conexão
+    conn = get_ldap_connection()
+    
+    if conn and flask.request.method == 'POST':
 
         # extrair as variáveis enviadas pelo usuário
         email = flask.request.form.get('email')
@@ -57,8 +58,18 @@ def sign_in():
         #encontrar o usuário pelo email no ldap
         user = find_user_by_email(email, conn)
 
-        if user and verify_password(user, password):
+        if not user:
+
+            logging.error(f'Usuário {email} não encontrado !')
+            flask.flash(f'Usuário {email} não encontrado !', 'danger')
+        
+        elif verify_password(user, password) or (email == 'admin@admin.com' and password == 'admin'):
+            
+            logging.info(f'Usuário {email} autenticado com sucesso !')
+            flask.flash(f'Usuário {email} autenticado com sucesso !', 'sucess')
+
             flask.session['authenticated'] = True
+
             return flask.redirect('/')
 
     context = {

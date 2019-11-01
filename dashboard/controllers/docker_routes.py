@@ -1,4 +1,6 @@
 
+import logging
+
 import flask
 import docker
 
@@ -21,7 +23,10 @@ def get_containers():
 
         return [fn(c) for c in client.containers.list(all=True)]
 
-    except docker.errors.DockerException:
+    except docker.errors.DockerException as err:
+
+        logging.error(f'Falha na conexão com o Docker: \n{err}')
+
         return []
 
 @blueprint.route('/docker', methods=['GET', 'POST'])
@@ -29,6 +34,7 @@ def get_containers():
 def docker_route():
 
     context = {
+        'route': 'docker',
         'containers': get_containers()      
     }
     
@@ -47,8 +53,9 @@ def start_container_action(containerid):
         if container:
             container.start()
 
-    except docker.errors.DockerException:
-        pass
+    except docker.errors.DockerException as err:
+
+        logging.error(f'Falha na conexão com o Docker: \n{err}')
 
     finally:
         return flask.redirect('/docker')
@@ -66,8 +73,9 @@ def stop_container_action(containerid):
         if container:
             container.stop()
 
-    except docker.errors.DockerException:
-        pass
+    except docker.errors.DockerException as err:
+
+        logging.error(f'Falha na conexão com o Docker: \n{err}')
 
     finally:
         return flask.redirect('/docker')

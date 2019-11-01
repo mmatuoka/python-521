@@ -1,5 +1,12 @@
 {% extends 'index.html' %}
 
+{% block messages %}
+    <div class="jenkins-messages">
+        {{ super() }}
+    </div>
+
+{% endblock %}
+
 {% block header %}
 <h5 class="card-title">
     Jenkins
